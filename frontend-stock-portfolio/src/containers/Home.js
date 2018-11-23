@@ -16,7 +16,7 @@ class Home extends React.Component {
         return(
             <div>
                 <button onClick={this.handleNavClick}>{this.state.onRegister ? "Go to Sign In" : "Create an Account" }</button>
-                {this.state.onRegister ? <RegistrationForm /> : <div>sign in component to make later</div> }
+                {this.state.onRegister ? <RegistrationForm handleRegister={this.props.handleRegister} /> : <div>sign in component to make later</div> }
             </div>
         )
     }
