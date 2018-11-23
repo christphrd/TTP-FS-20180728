@@ -1,12 +1,31 @@
 import React from 'react';
 
 class RegistrationForm extends React.Component {
+    state = {
+        name: "",
+        email: "",
+        password: ""
+    };
+
+    handleChange = e => {
+        this.setState({
+            ...this.state,
+            [e.target.name]: e.target.value
+        })
+    };
+
+    handleSubmit = e => {
+        e.preventDefault();
+
+        console.log(this.state)
+    }
+
     render(){
         return(
-            <form>
-                <input name="name" type="text" placeholder="name"></input>
-                <input name="email" type="text" placeholder="email"></input>
-                <input name="password" type="password" placeholder="password"></input>
+            <form onSubmit={this.handleSubmit}>
+                <input name="name" type="text" placeholder="name" onChange={this.handleChange}></input>
+                <input name="email" type="text" placeholder="email" onChange={this.handleChange}></input>
+                <input name="password" type="password" placeholder="password" onChange={this.handleChange}></input>
                 <button type="submit">Register</button>
             </form>
         )
