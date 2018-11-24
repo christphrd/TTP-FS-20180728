@@ -32,10 +32,35 @@ class App extends Component {
       this.setState({
         isLoggedIn: true,
         userData: json.user
-      }, () => console.log(this.state));
+      });
     } else {
       console.log(response, json)
     }
+  };
+
+  handleSignIn = async data => {
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    };
+
+    const response = await fetch(`${backendBaseURL}auth`, settings);
+    const json = await response.json();
+
+    if (json.status === 200) {
+      localStorage.setItem("token", json.token);
+
+      this.setState({
+        isLoggedIn: true,
+        userData: json.user
+      });
+    } else {
+      console.log(response, json)
+    } 
   };
 
   render() {
@@ -46,7 +71,7 @@ class App extends Component {
         </header>
         <body>
           <h2>In app component</h2>
-          {this.state.isLoggedIn ? <div>logged in is true</div> : <Home handleRegister={this.handleRegister} />}
+          {this.state.isLoggedIn ? <div>logged in is true</div> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
         </body>
       </div>
     );
