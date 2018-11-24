@@ -25,7 +25,7 @@ class App extends Component {
     
     const response = await fetch(`${backendBaseURL}users`, settings);
     const json = await response.json();
-    console.log(response, json);
+    
     if (json.status === 201) {
       this.setState({
         isLoggedIn: true,
