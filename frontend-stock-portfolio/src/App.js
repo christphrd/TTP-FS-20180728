@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 // import './App.css';
-import {backendBaseURL} from './constants/index.js';
+import {backendBaseURL, HEADERS} from './constants/index.js';
 import Home from './containers/Home.js';
+import LoggedInContainer from './containers/LoggedInContainer.js';
 
 class App extends Component {
   state = {
@@ -13,10 +14,7 @@ class App extends Component {
   handleRegister = async data => {
     const settings = {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: HEADERS,
       body: JSON.stringify({
         ...data,
         password_confirmation: data.password
@@ -27,7 +25,7 @@ class App extends Component {
     const json = await response.json();
 
     if (json.status === 201) {
-      localStorage.setItem("token", json.token);
+      localStorage.setItem("spra-token", json.token);
 
       this.setState({
         isLoggedIn: true,
@@ -41,10 +39,7 @@ class App extends Component {
   handleSignIn = async data => {
     const settings = {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: HEADERS,
       body: JSON.stringify(data)
     };
 
@@ -52,7 +47,7 @@ class App extends Component {
     const json = await response.json();
 
     if (json.status === 200) {
-      localStorage.setItem("token", json.token);
+      localStorage.setItem("spra-token", json.token);
 
       this.setState({
         isLoggedIn: true,
@@ -63,15 +58,23 @@ class App extends Component {
     } 
   };
 
+  logOut = () => {
+    localStorage.removeItem("spra-token");
+
+    this.setState({
+      isLoggedIn: false,
+      userData: null
+    });
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          App header
+          Stocks Portfolio React App
         </header>
         <body>
-          <h2>In app component</h2>
-          {this.state.isLoggedIn ? <div>logged in is true</div> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
+          {this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
         </body>
       </div>
     );
