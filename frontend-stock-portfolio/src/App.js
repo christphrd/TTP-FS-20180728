@@ -7,8 +7,34 @@ import LoggedInContainer from './containers/LoggedInContainer.js';
 
 class App extends Component {
   state = {
+    loading: false,
     isLoggedIn: false,
     userData: null
+  };
+
+  componentDidMount() {
+    if (localStorage.getItem("spra-token")) {
+      this.setState({
+        ...this.state,
+        loading: true
+      });
+
+      const settings = {
+        headers: {
+          ...HEADERS,
+          Authorization: `Bearer ${localStorage.getItem("spra-token")}`
+        }
+      };
+
+      fetch(`${backendBaseURL}current_user`, settings)
+      .then(res => res.json())
+      .then(json => this.setState({
+        loading: false,
+        isLoggedIn: true,
+        userData: json.user
+      }))
+      .catch(console.log)
+    };
   };
 
   handleRegister = async data => {
@@ -21,13 +47,14 @@ class App extends Component {
       })
     };
     
-    const response = await fetch(`${backendBaseURL}users`, settings);
+    const response = await fetch(`${backendBaseURL}register`, settings);
     const json = await response.json();
 
     if (json.status === 201) {
       localStorage.setItem("spra-token", json.token);
 
       this.setState({
+        ...this.state,
         isLoggedIn: true,
         userData: json.user
       });
@@ -43,13 +70,14 @@ class App extends Component {
       body: JSON.stringify(data)
     };
 
-    const response = await fetch(`${backendBaseURL}auth`, settings);
+    const response = await fetch(`${backendBaseURL}signin`, settings);
     const json = await response.json();
 
     if (json.status === 200) {
       localStorage.setItem("spra-token", json.token);
 
       this.setState({
+        ...this.state,
         isLoggedIn: true,
         userData: json.user
       });
@@ -62,6 +90,7 @@ class App extends Component {
     localStorage.removeItem("spra-token");
 
     this.setState({
+      ...this.state,
       isLoggedIn: false,
       userData: null
     });
@@ -74,7 +103,7 @@ class App extends Component {
           Stocks Portfolio React App
         </header>
         <body>
-          {this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
+          {this.state.loading ? <div>loading...</div> : this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
         </body>
       </div>
     );
