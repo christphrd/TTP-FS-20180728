@@ -25,12 +25,14 @@ class App extends Component {
     
     const response = await fetch(`${backendBaseURL}users`, settings);
     const json = await response.json();
-    
+
     if (json.status === 201) {
+      localStorage.setItem("token", json.token);
+
       this.setState({
         isLoggedIn: true,
         userData: json.user
-      }, () => console.log(this.state))
+      }, () => console.log(this.state));
     } else {
       console.log(response, json)
     }
