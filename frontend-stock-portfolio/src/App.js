@@ -23,13 +23,17 @@ class App extends Component {
       })
     };
     
-    console.log(settings)
-    const response = await fetch(`${backendBaseURL}users`, settings)
-    const json = await response.json()
-    await this.setState({
-      ...this.state,
-      userData: json
-    }, () => console.log(this.state))
+    const response = await fetch(`${backendBaseURL}users`, settings);
+    const json = await response.json();
+    console.log(response, json);
+    if (json.status === 201) {
+      this.setState({
+        isLoggedIn: true,
+        userData: json.user
+      }, () => console.log(this.state))
+    } else {
+      console.log(response, json)
+    }
   };
 
   render() {
