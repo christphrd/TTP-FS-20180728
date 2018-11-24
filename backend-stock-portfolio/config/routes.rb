@@ -3,4 +3,6 @@ Rails.application.routes.draw do
   post "/register", to: "users#create"
   post "/signin", to: "auth#create"
   get "/current_user", to: "auth#show"
+
+  resources :transactions, only: [:create]
 end

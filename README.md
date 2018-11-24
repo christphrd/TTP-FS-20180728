@@ -23,3 +23,10 @@ that I can buy and trade stocks.
 
 2. As a user I want to authenticate via `email` and `password` so that I can access my
 account.
+
+3. As a user I want to buy shares of stock at its current price by specifying its
+`ticker symbol` and `number of shares` so that I can invest.
+ - A user can only buy whole number quantities of shares.
+ - A user can only buy shares if they have enough cash in their account for a
+given purchase.
+ - A user can only buy shares if the ticker symbol is valid.
