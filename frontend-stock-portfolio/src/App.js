@@ -108,21 +108,44 @@ class App extends Component {
 
     let balance = Number(this.state.userData.account_balance)
     if (balance < Number(quantity) * price) {
-      alert(`Sorry, buying ${quantity} shares of ${ticker.toUpperCase()} at $${price.toFixed(2)} would cost a total of $${(Number(quantity) * price).toFixed(2)}. You only have a balance of $${balance.toFixed(2)}.`)
+      alert(`Sorry, buying ${quantity} shares of ${ticker.toUpperCase()} at $${price} would cost a total of $${(Number(quantity) * price).toFixed(2)}. You only have a balance of $${balance.toFixed(2)}.`)
       return
     }
-    if (window.confirm(`Are you sure you want to buy ${quantity} shares of ${ticker.toUpperCase()} at $${price.toFixed(2)}? The total cost would be $${(Number(quantity) * price).toFixed(2)}. You would have a remaining balance of $${(balance - (Number(quantity) * price)).toFixed(2)}.`)) {
+
+    if (window.confirm(`Are you sure you want to buy ${quantity} share(s) of ${ticker.toUpperCase()} at $${price}? The total cost would be $${(Number(quantity) * price).toFixed(2)}. You would have a remaining balance of $${(balance - (Number(quantity) * price)).toFixed(2)}.`)) {
       this.confirmBuy({
         ticker: ticker.toUpperCase(),
         quantity: Number(quantity),
-        price: price.toFixed(2),
-        account_balance: balance
+        price: price,
+        account_balance: Number(balance - (Number(quantity) * price)).toFixed(2)
       })
     }
   }
 
-  confirmBuy = async ({ticker, quantity, price, account_balance}) => {
-    console.log(ticker)
+  confirmBuy = async (data) => {
+    const settings = {
+      method: 'POST',
+      headers: { 
+        ...HEADERS, 
+        Authorization: `Bearer ${localStorage.getItem("spra-token")}`
+      },
+      body: JSON.stringify(data)
+    }
+
+    let res = await fetch(`${backendBaseURL}transactions`, settings)
+    if (res.ok) {
+      let json = await res.json()
+      this.setState({
+        ...this.state,
+        userData: {
+          ...this.state.userData,
+          account_balance: json.account_balance
+        }
+      })
+      alert("Success!")
+    } else {
+      alert("Try again. There was an issue!")
+    }
   }
 
   render() {
