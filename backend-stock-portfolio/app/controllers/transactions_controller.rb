@@ -16,6 +16,10 @@ class TransactionsController < ApplicationController
         end
     end
 
+    def index
+        render json: current_user.transactions.reverse, status: 201
+    end
+
     private
 
     def transaction_params
