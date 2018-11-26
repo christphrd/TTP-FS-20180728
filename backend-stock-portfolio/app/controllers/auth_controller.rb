@@ -7,7 +7,7 @@ class AuthController < ApplicationController
         if @user
             render json: {status: 200, message: "OK", user: { email: @user.email, name: @user.name, account_balance: @user.account_balance}, token: @user.encode_token }
         else
-            render json: {error: "Login Failed. Please try again." }, status: 401
+            render json: {error: "Sign in Failed. Please try again." }, status: 401
         end
     end
 
