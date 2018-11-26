@@ -1,8 +1,9 @@
 import React from 'react';
 import BuyTransaction from '../components/BuyTransaction';
 import Audit from '../components/Audit';
+import Portfolio from '../components/Portfolio';
 
-import { backendBaseURL, HEADERS } from '../constants';
+import { backendBaseURL, AUTH_HEADERS } from '../constants';
 
 class LoggedInContainer extends React.Component {
     state = {
@@ -12,10 +13,7 @@ class LoggedInContainer extends React.Component {
 
     componentDidMount() {
       const settings = {
-        headers: {
-          ...HEADERS,
-          Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-        }
+        headers: AUTH_HEADERS
       };
 
       fetch(`${backendBaseURL}audit`, settings)
@@ -41,7 +39,7 @@ class LoggedInContainer extends React.Component {
                 <button onClick={this.props.logOut}>Log Out</button>
                 <button onClick={this.handleNavClick}>{this.state.onAudit ? "Portfolio and Buy" : "See Transactions"}</button>
                 <h2>Hi {name}, this is your email {email}.</h2>
-                {this.state.onAudit ? <Audit transactions={this.state.transactions} /> : <BuyTransaction balance={Number(account_balance).toFixed(2)} buyShares={this.props.buyShares}/>}
+                {this.state.onAudit ? <Audit transactions={this.state.transactions} /> : <div><Portfolio /> <BuyTransaction balance={Number(account_balance).toFixed(2)} buyShares={this.props.buyShares}/></div>}
             </div>
         )
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 // import './App.css';
-import { backendBaseURL, stocksBaseURL, HEADERS} from './constants';
+import { backendBaseURL, stocksBaseURL, HEADERS, AUTH_HEADERS} from './constants';
 import Home from './containers/Home.js';
 import LoggedInContainer from './containers/LoggedInContainer.js';
 
@@ -20,10 +20,7 @@ class App extends Component {
       });
 
       const settings = {
-        headers: {
-          ...HEADERS,
-          Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-        }
+        headers: AUTH_HEADERS
       };
 
       fetch(`${backendBaseURL}current_user`, settings)
@@ -33,7 +30,7 @@ class App extends Component {
         isLoggedIn: true,
         userData: json.user
       }))
-      .catch(console.log)
+      .catch(err => console.log(err))
     };
   };
 
@@ -125,10 +122,7 @@ class App extends Component {
   confirmBuy = async (data) => {
     const settings = {
       method: 'POST',
-      headers: { 
-        ...HEADERS, 
-        Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-      },
+      headers: AUTH_HEADERS,
       body: JSON.stringify(data)
     }
 
