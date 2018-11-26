@@ -16,6 +16,6 @@ class User < ApplicationRecord
                 portfolio[transaction[:ticker]] = transaction[:quantity]
             end
         end
-        portfolio
+        portfolio #hash of ticker symbol => total shares owned
     end
 end
