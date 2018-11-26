@@ -11,6 +11,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def portfolio
+    render json: current_user.portfolio, status: 200
+  end
+
   private
 
   def user_params
