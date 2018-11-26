@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     if @user.save
       render json: {status: 201, message: "Successfully created.", user: { email: @user.email, name: @user.name, account_balance: @user.account_balance}, token: @user.encode_token }
     else
-      render json: {errors: @user.errors.full_messages }
+      render json: {errors: @user.errors.full_messages }, status: 400
     end
   end
 

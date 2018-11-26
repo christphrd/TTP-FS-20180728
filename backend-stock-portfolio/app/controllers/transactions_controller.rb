@@ -5,7 +5,7 @@ class TransactionsController < ApplicationController
         if @transaction.save
             render json: @transaction, status: 201
         else
-            render json: {errors: @transaction.errors.full_messages }
+            render json: {errors: @transaction.errors.full_messages }, status: 400
         end
     end
 

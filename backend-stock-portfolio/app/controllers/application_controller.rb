@@ -23,11 +23,13 @@ class ApplicationController < ActionController::API
         end
     end
 
-    def logged_in?
+    def signed_in?
         !!current_user
     end
 
     def authorized
-        render json: {status: 401, message: "Please log in"} unless logged_in?
+        unless signed_in?
+            render json: {message: "Please sign in."}, status: 401
+        end
     end
 end

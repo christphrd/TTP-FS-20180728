@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 // import './App.css';
-import {backendBaseURL, HEADERS} from './constants/index.js';
+import { backendBaseURL, stocksBaseURL, HEADERS} from './constants';
 import Home from './containers/Home.js';
 import LoggedInContainer from './containers/LoggedInContainer.js';
 
@@ -94,6 +94,35 @@ class App extends Component {
       isLoggedIn: false,
       userData: null
     });
+  };
+
+  buyShares = async ({ ticker, quantity }) => {
+    let price
+    const response = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
+    if (response.ok) {
+      price = await response.json()
+    } else {
+      alert("Try again. Check the ticker symbol.")
+      return
+    }
+
+    let balance = Number(this.state.userData.account_balance)
+    if (balance < Number(quantity) * price) {
+      alert(`Sorry, buying ${quantity} shares of ${ticker.toUpperCase()} at $${price.toFixed(2)} would cost a total of $${(Number(quantity) * price).toFixed(2)}. You only have a balance of $${balance.toFixed(2)}.`)
+      return
+    }
+    if (window.confirm(`Are you sure you want to buy ${quantity} shares of ${ticker.toUpperCase()} at $${price.toFixed(2)}? The total cost would be $${(Number(quantity) * price).toFixed(2)}. You would have a remaining balance of $${(balance - (Number(quantity) * price)).toFixed(2)}.`)) {
+      this.confirmBuy({
+        ticker: ticker.toUpperCase(),
+        quantity: Number(quantity),
+        price: price.toFixed(2),
+        account_balance: balance
+      })
+    }
+  }
+
+  confirmBuy = async ({ticker, quantity, price, account_balance}) => {
+    console.log(ticker)
   }
 
   render() {
@@ -103,7 +132,7 @@ class App extends Component {
           Stocks Portfolio React App
         </header>
         <body>
-          {this.state.loading ? <div>loading...</div> : this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
+          {this.state.loading ? <div>loading...</div> : this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} buyShares={this.buyShares} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
         </body>
       </div>
     );
