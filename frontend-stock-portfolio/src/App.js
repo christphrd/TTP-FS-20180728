@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
-// import './App.css';
+import './App.css';
 import { backendBaseURL, stocksBaseURL, HEADERS, AUTH_HEADERS} from './constants';
 import Home from './containers/Home.js';
 import LoggedInContainer from './containers/LoggedInContainer.js';

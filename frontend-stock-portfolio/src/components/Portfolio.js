@@ -45,10 +45,14 @@ class Portfolio extends React.Component {
     }
 
     renderStocks = () => {
-        return this.state.portfolio.map(stock => {
-            let ticker = Object.keys(stock)[0], qty = Object.values(stock)[0];
-            return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={stock.price} />
-        })
+        if (this.state.portfolio.length > 0 ) {
+            return this.state.portfolio.map(stock => {
+                let ticker = Object.keys(stock)[0], qty = Object.values(stock)[0];
+                return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={stock.price} />
+            })
+        } else {
+            return null
+        }
     };
 
     render() {
