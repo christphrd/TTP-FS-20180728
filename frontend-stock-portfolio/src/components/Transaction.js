@@ -6,7 +6,7 @@ const Transaction = props => {
         return `transaction-`+ id
     };
 
-    return (<li id={makeId()}>BUY ({ticker}) - {quantity} Share(s) @ ${price}</li>)
+    return (<li id={makeId()}>BUY ({ticker}) - {quantity} Share(s) @ ${Number(price).toFixed(2)}</li>)
 };
 
 export default Transaction;

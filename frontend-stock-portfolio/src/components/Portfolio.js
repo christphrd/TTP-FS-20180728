@@ -1,11 +1,11 @@
 import React from 'react';
 
 import PortfolioItem from './PortfolioItem';
-import { backendBaseURL, AUTH_HEADERS } from '../constants';
+import { stocksBaseURL, backendBaseURL, AUTH_HEADERS } from '../constants';
 
 class Portfolio extends React.Component {
     state = {
-        portfolio: {}
+        portfolio: []
     };
 
     componentDidMount(){
@@ -13,23 +13,42 @@ class Portfolio extends React.Component {
             headers: AUTH_HEADERS
         };
 
-        fetch(`${backendBaseURL}portfolio`, settings)
-        .then(res => res.json())
-        .then(json => this.setState({
-            ...this.state,
-            portfolio: json
-        }))
-        .catch(console.log)
+        const fetching = async () => {
+            const response = await fetch(`${backendBaseURL}portfolio`, settings)
+            const json = await response.json()
+            this.setState({
+                ...this.state,
+                portfolio: json
+            }, () => this.getPrices())
+        }
+
+        fetching()
     };
 
-    renderStocks = () => {
-        let portfolio = this.state.portfolio;
-        let render = [];
-        for (let stock in portfolio){
-            render.push(<PortfolioItem key={stock} ticker={stock} qty={portfolio[stock]} />)
-        };
+    getPrices = async () => {
+        this.state.portfolio.map((stock, i) => this.getPrice(stock, i))
+    };
 
-        return render
+    getPrice = async (stock, i) => {
+        let ticker = Object.keys(stock)[0]
+        const response = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
+        const price = await response.json()
+        this.setState({
+            portfolio: this.replaceOneElementInArray(this.state.portfolio, i, Object.assign(stock, { price: price }))
+        })
+    }
+
+    replaceOneElementInArray = (arr, ind, sub) => {
+        let copy = arr.slice()
+        copy[ind] = sub
+        return copy
+    }
+
+    renderStocks = () => {
+        return this.state.portfolio.map(stock => {
+            let ticker = Object.keys(stock)[0], qty = Object.values(stock)[0];
+            return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={stock.price} />
+        })
     };
 
     render() {

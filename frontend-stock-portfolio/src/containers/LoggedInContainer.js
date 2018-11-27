@@ -3,7 +3,7 @@ import BuyTransaction from '../components/BuyTransaction';
 import Audit from '../components/Audit';
 import Portfolio from '../components/Portfolio';
 
-import { backendBaseURL, AUTH_HEADERS } from '../constants';
+import { backendBaseURL,  AUTH_HEADERS } from '../constants';
 
 class LoggedInContainer extends React.Component {
     state = {
@@ -26,10 +26,18 @@ class LoggedInContainer extends React.Component {
     };
 
     handleNavClick = e => {
-        this.setState({
+        const settings = {
+            headers: AUTH_HEADERS
+        };
+        
+        fetch(`${backendBaseURL}audit`, settings)
+        .then(res => res.json())
+        .then(json => this.setState({
             ...this.state,
+            transactions: json,
             onAudit: !this.state.onAudit
-        })
+        }))
+        .catch(console.log)
     };
     
     render() {

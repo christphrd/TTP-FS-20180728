@@ -2,10 +2,11 @@ import React from 'react';
 
 class PortfolioItem extends React.Component {
     render() {
-        const {ticker, qty} = this.props;
+        console.log(this.props)
+        const {ticker, qty, price} = this.props;
         return(
             <div>
-                {ticker} - {qty} Share(s)
+                {ticker} - {qty} Share(s) ${(qty * price).toFixed(2)} 
             </div>
         )
     }

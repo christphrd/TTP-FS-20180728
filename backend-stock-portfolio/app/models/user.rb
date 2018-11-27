@@ -8,14 +8,21 @@ class User < ApplicationRecord
     end
 
     def portfolio
-        portfolio = {}
+        portfolio_hash = {}
         transactions.each do |transaction|
-            if !!portfolio[transaction[:ticker]]
-                portfolio[transaction[:ticker]] += transaction[:quantity]
+            if !!portfolio_hash[transaction[:ticker]]
+                portfolio_hash[transaction[:ticker]] += transaction[:quantity]
             else
-                portfolio[transaction[:ticker]] = transaction[:quantity]
+                portfolio_hash[transaction[:ticker]] = transaction[:quantity]
             end
         end
-        portfolio #hash of ticker symbol => total shares owned
+
+        portfolio = []
+        portfolio_hash.each do |tick, qty|
+            stock = {}
+            stock[tick] = qty
+            portfolio.push(stock)
+        end
+        portfolio
     end
 end
