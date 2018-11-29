@@ -31,11 +31,15 @@ class Portfolio extends React.Component {
 
     getPrice = async (stock, i) => {
         let ticker = Object.keys(stock)[0]
-        const response = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
-        const price = await response.json()
+        const priceRes = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
+        const price = await priceRes.json()
+
+        const openRes = await fetch(`${stocksBaseURL}stock/${ticker}/ohlc`)
+        const open = await openRes.json()
+
         this.setState({
-            portfolio: this.replaceOneElementInArray(this.state.portfolio, i, Object.assign(stock, { price: price }))
-        })
+            portfolio: this.replaceOneElementInArray(this.state.portfolio, i, Object.assign(stock, { price: price , open: open.open.price}))
+        }, () => console.log(this.state))
     }
 
     replaceOneElementInArray = (arr, ind, sub) => {
@@ -48,7 +52,7 @@ class Portfolio extends React.Component {
         if (this.state.portfolio.length > 0 ) {
             return this.state.portfolio.map(stock => {
                 let ticker = Object.keys(stock)[0], qty = Object.values(stock)[0];
-                return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={stock.price} />
+                return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={stock.price} open={stock.open} />
             })
         } else {
             return null
