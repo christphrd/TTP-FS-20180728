@@ -9,21 +9,29 @@ class Portfolio extends React.Component {
     };
 
     componentDidMount(){
+        this.fetchPortfolio();
+
+        this.interval = setInterval(() => {
+            this.fetchPortfolio()
+        }, 10000);
+    };
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    fetchPortfolio = async () => {
         const settings = {
             headers: AUTH_HEADERS
         };
 
-        const fetching = async () => {
-            const response = await fetch(`${backendBaseURL}portfolio`, settings)
-            const json = await response.json()
-            this.setState({
-                ...this.state,
-                portfolio: json
-            }, () => this.getPrices())
-        }
-
-        fetching()
-    };
+        const response = await fetch(`${backendBaseURL}portfolio`, settings)
+        const json = await response.json()
+        this.setState({
+            ...this.state,
+            portfolio: json
+        }, () => this.getPrices())
+    }
 
     getPrices = async () => {
         this.state.portfolio.map((stock, i) => this.getPrice(stock, i))
@@ -34,12 +42,12 @@ class Portfolio extends React.Component {
         const priceRes = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
         const price = await priceRes.json()
 
-        const openRes = await fetch(`${stocksBaseURL}stock/${ticker}/ohlc`)
-        const open = await openRes.json()
+        const ohlcRes = await fetch(`${stocksBaseURL}stock/${ticker}/ohlc`)
+        const ohlc = await ohlcRes.json()
 
         this.setState({
-            portfolio: this.replaceOneElementInArray(this.state.portfolio, i, Object.assign(stock, { price: price , open: open.open.price}))
-        }, () => console.log(this.state))
+            portfolio: this.replaceOneElementInArray(this.state.portfolio, i, Object.assign(stock, { price: price , open: ohlc.open.price}))
+        })
     }
 
     replaceOneElementInArray = (arr, ind, sub) => {
