@@ -13,7 +13,7 @@ class Portfolio extends React.Component {
 
         this.interval = setInterval(() => {
             this.fetchPortfolio()
-        }, 10000);
+        }, 2000);
     };
 
     componentWillUnmount() {
@@ -34,7 +34,9 @@ class Portfolio extends React.Component {
     }
 
     getPrices = async () => {
-        this.state.portfolio.map((stock, i) => this.getPrice(stock, i))
+        if (this.state.portfolio.length > 0) {
+            this.state.portfolio.map((stock, i) => this.getPrice(stock, i))
+        }
     };
 
     getPrice = async (stock, i) => {
