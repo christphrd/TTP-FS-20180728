@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import { backendBaseURL, stocksBaseURL, HEADERS, AUTH_HEADERS} from './constants';
+
+import Header from './components/Header.js';
 import Home from './containers/Home.js';
 import LoggedInContainer from './containers/LoggedInContainer.js';
 
@@ -146,7 +148,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          Stocks Portfolio React App
+          <Header />
         </header>
         <body>
           {this.state.loading ? <div>loading...</div> : this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} buyShares={this.buyShares} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
