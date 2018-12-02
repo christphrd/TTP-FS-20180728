@@ -1,11 +1,18 @@
 body {
-  background-color:  rgb(236, 239, 241);
+  background-color:  rgb(238, 238, 238);
+  /* background-image: url("./img/chris-li-182361-unsplash.jpg");
+  background-size: cover;
+  background-repeat: no-repeat; */
 }
 
 #home-card {
   position: absolute;
   top: 15%;
-  margin-left: 15%;
+  margin-left: 10%;
   width: 300px;
   text-align: center;
+}
+
+.home-form {
+  margin-bottom: 10px;
 }

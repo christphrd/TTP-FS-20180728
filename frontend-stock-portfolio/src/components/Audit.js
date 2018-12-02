@@ -3,7 +3,11 @@ import Transaction from './Transaction';
 
 const Audit = props => {
     const renderTransactions = () => {
-        return props.transactions.map(transaction => <Transaction key={transaction.id} transaction={transaction} />)
+        if (props.transactions.length > 0) {
+            return props.transactions.map(transaction => <Transaction key={transaction.id} transaction={transaction} />)
+        } else {
+            return null
+        }
     };
 
     return(

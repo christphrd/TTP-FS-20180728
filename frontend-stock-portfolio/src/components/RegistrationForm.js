@@ -22,7 +22,7 @@ class RegistrationForm extends React.Component {
 
     render(){
         return(
-            <form onSubmit={this.handleSubmit}>
+            <form className="home-form" onSubmit={this.handleSubmit}>
                 <input name="name" type="text" placeholder="name" onChange={this.handleChange}></input>
                 <input name="email" type="text" placeholder="email" onChange={this.handleChange}></input>
                 <input name="password" type="password" placeholder="password" onChange={this.handleChange}></input>
