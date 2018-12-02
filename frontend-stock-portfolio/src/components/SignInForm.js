@@ -2,7 +2,6 @@ import React from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-// import AccountCircle from '@material-ui/icons/AccountCircle';
 import Email from '@material-ui/icons/Email';
 import Lock from '@material-ui/icons/Lock';
 
