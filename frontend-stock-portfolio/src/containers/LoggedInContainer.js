@@ -3,6 +3,8 @@ import BuyTransaction from '../components/BuyTransaction';
 import Audit from '../components/Audit';
 import Portfolio from '../components/Portfolio';
 
+import Button from '@material-ui/core/Button';
+
 import { backendBaseURL,  AUTH_HEADERS } from '../constants';
 
 class LoggedInContainer extends React.Component {
@@ -44,9 +46,11 @@ class LoggedInContainer extends React.Component {
         const {account_balance, email, name} = {...this.props.userData};
         return (
             <div>
-                <button onClick={this.props.logOut}>Log Out</button>
-                <button onClick={this.handleNavClick}>{this.state.onAudit ? "Portfolio and Buy" : "See Transactions"}</button>
-                <h2>Hi {name}, this is your email {email}.</h2>
+                <Button variant="contained" color="secondary" onClick={this.props.logOut}>Log Out</Button>
+                <h2>
+                    Hi {name}, this is your email {email}.
+                    <button onClick={this.handleNavClick}>{this.state.onAudit ? "Portfolio and Buy" : "See Transactions"}</button>
+                </h2>
                 {this.state.onAudit ? <Audit transactions={this.state.transactions} /> : <div><Portfolio /> <BuyTransaction balance={Number(account_balance).toFixed(2)} buyShares={this.props.buyShares}/></div>}
             </div>
         )
