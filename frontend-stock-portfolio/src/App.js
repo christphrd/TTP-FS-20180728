@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import './App.css';
-import { backendBaseURL, stocksBaseURL, HEADERS, AUTH_HEADERS} from './constants';
+import { backendBaseURL, stocksBaseURL, HEADERS} from './constants';
 
 import Header from './components/Header.js';
 import Home from './containers/Home.js';
@@ -24,7 +24,10 @@ class App extends Component {
       });
 
       const settings = {
-        headers: AUTH_HEADERS
+        headers: {
+          ...HEADERS,
+          Authorization: `Bearer ${localStorage.getItem("spra-token")}`
+        }
       };
 
       fetch(`${backendBaseURL}current_user`, settings)
@@ -126,7 +129,10 @@ class App extends Component {
   confirmBuy = async (data) => {
     const settings = {
       method: 'POST',
-      headers: AUTH_HEADERS,
+      headers: {
+        ...HEADERS,
+        Authorization: `Bearer ${localStorage.getItem("spra-token")}`
+      },
       body: JSON.stringify(data)
     }
 

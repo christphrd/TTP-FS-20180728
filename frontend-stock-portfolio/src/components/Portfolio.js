@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PortfolioItem from './PortfolioItem';
-import { stocksBaseURL, backendBaseURL, AUTH_HEADERS } from '../constants';
+import { stocksBaseURL, backendBaseURL, HEADERS} from '../constants';
 
 class Portfolio extends React.Component {
     state = {
@@ -22,7 +22,10 @@ class Portfolio extends React.Component {
 
     fetchPortfolio = async () => {
         const settings = {
-            headers: AUTH_HEADERS
+            headers: {
+                ...HEADERS,
+                Authorization: `Bearer ${localStorage.getItem("spra-token")}`
+            }
         };
 
         const response = await fetch(`${backendBaseURL}portfolio`, settings)
