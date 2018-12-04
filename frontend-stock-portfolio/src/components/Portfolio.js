@@ -3,6 +3,8 @@ import React from 'react';
 import PortfolioItem from './PortfolioItem';
 import { stocksBaseURL, backendBaseURL, HEADERS} from '../constants';
 
+import Paper from '@material-ui/core/Paper';
+
 class Portfolio extends React.Component {
     state = {
         portfolio: []
@@ -74,10 +76,10 @@ class Portfolio extends React.Component {
 
     render() {
         return(
-            <div>
-                Portfolio
+            <Paper elevation={1} style={{width: '300px'}}>
+                <h3>Portfolio</h3>
                 {this.renderStocks()}
-            </div>
+            </Paper>
         )
     }
 };
