@@ -18,7 +18,7 @@ class PortfolioItem extends React.Component {
         const value = (qty * price).toFixed(2)
         return(
             <div style={this.coloring(price, open)}>
-                {ticker} - {qty} Share(s) ${value} 
+                {ticker} - {qty} Share(s) ${isNaN(value) ? null : value} 
             </div>
         )
     }

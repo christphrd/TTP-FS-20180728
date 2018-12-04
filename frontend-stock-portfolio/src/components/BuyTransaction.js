@@ -32,7 +32,7 @@ class BuyTransaction extends React.Component {
 
         return (
             <Paper elevation={1} style={buyStyle}>
-                <div>
+                <div id="buy-transaction">
                     <h4>Cash: ${this.props.balance}</h4>
                     <form onSubmit={this.handleSubmit}>
                         <input name="ticker" type="text" placeholder="Ticker" onChange={this.handleChange}></input><p /> 

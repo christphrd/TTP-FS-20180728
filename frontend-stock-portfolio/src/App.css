@@ -16,3 +16,18 @@ body {
 .home-form {
   margin-bottom: 10px;
 }
+
+#portfolio-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#portfolio {
+  order: 0;
+}
+
+#buy-transaction {
+  order: 1;
+}

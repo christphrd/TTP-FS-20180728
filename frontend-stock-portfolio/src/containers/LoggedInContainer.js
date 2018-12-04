@@ -57,7 +57,7 @@ class LoggedInContainer extends React.Component {
                 <h2>
                     Hi {name}, this is your email: {email}.
                 </h2>
-                {this.state.onAudit ? <Audit transactions={this.state.transactions} /> : <div><Portfolio /> <BuyTransaction balance={Number(account_balance).toFixed(2)} buyShares={this.props.buyShares}/></div>}
+                {this.state.onAudit ? <Audit transactions={this.state.transactions} /> : <div id="portfolio-container"><Portfolio /> <BuyTransaction balance={Number(account_balance).toFixed(2)} buyShares={this.props.buyShares}/></div>}
             </div>
         )
     }
