@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+
 import './App.css';
 import { backendBaseURL, stocksBaseURL, HEADERS, AUTH_HEADERS} from './constants';
 
 import Header from './components/Header.js';
 import Home from './containers/Home.js';
 import LoggedInContainer from './containers/LoggedInContainer.js';
+
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 class App extends Component {
   state = {
@@ -151,7 +153,7 @@ class App extends Component {
           <Header />
         </header>
         <body>
-          {this.state.loading ? <div>loading...</div> : this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} buyShares={this.buyShares} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
+          {this.state.loading ? <LinearProgress variant="query" style={{ flexGrow: 1}} /> : this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} buyShares={this.buyShares} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
         </body>
       </div>
     );

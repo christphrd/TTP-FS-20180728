@@ -49,7 +49,7 @@ class LoggedInContainer extends React.Component {
                 <Button variant="contained" color="secondary" onClick={this.props.logOut}>Log Out</Button>
                 <h2>
                     Hi {name}, this is your email {email}.
-                    <button onClick={this.handleNavClick}>{this.state.onAudit ? "Portfolio and Buy" : "See Transactions"}</button>
+                    <button onClick={this.handleNavClick}>{this.state.onAudit ? "See Portfolio" : "See Transactions"}</button>
                 </h2>
                 {this.state.onAudit ? <Audit transactions={this.state.transactions} /> : <div><Portfolio /> <BuyTransaction balance={Number(account_balance).toFixed(2)} buyShares={this.props.buyShares}/></div>}
             </div>
