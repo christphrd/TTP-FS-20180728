@@ -13,23 +13,6 @@ class LoggedInContainer extends React.Component {
         transactions: []
     };
 
-    componentDidMount() {
-      const settings = {
-          headers: {
-              ...HEADERS,
-              Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-          }
-      };
-
-      fetch(`${backendBaseURL}audit`, settings)
-      .then(res => res.json())
-      .then(json => this.setState({
-        ...this.state,
-        transactions: json
-      }))
-      .catch(console.log)
-    };
-
     handleNavClick = e => {
         const settings = {
             headers: {
