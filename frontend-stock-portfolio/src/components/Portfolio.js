@@ -50,7 +50,7 @@ class Portfolio extends React.Component {
     };
 
     getPrice = async (stock, i) => {
-        let ticker = Object.keys(stock)[0]
+        let ticker = stock.ticker
         const priceRes = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
         const price = await priceRes.json()
 
@@ -71,8 +71,8 @@ class Portfolio extends React.Component {
     renderStocks = () => {
         if (this.state.portfolio.length > 0 ) {
             return this.state.portfolio.map(stock => {
-                let ticker = Object.keys(stock)[0], qty = Object.values(stock)[0];
-                return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={stock.price} open={stock.open} />
+                let {ticker, qty, price, open} = {...stock};
+                return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={price} open={open} />
             })
         } else {
             return null

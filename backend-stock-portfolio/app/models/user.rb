@@ -19,9 +19,10 @@ class User < ApplicationRecord
         end
 
         portfolio = []
-        portfolio_hash.each do |tick, qty|
+        portfolio_hash.each do |ticker, qty|
             stock = {}
-            stock[tick] = qty
+            stock["ticker"] = ticker
+            stock["qty"] = qty
             portfolio.push(stock)
         end
         portfolio
