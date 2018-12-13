@@ -31,7 +31,7 @@ class LoggedInContainer extends React.Component {
     };
     
     render() {
-        const {account_balance, email, name} = {...this.props.userData};
+        const {account_balance, email, name} = this.props.userData;
         return (
             <div>
                 <Button variant="contained" color="secondary" onClick={this.props.logOut}>Log Out</Button>
