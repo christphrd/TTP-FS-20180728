@@ -42,7 +42,7 @@ class Portfolio extends React.Component {
         }, () => this.getPrices())
     }
 
-    getPrices = async () => {
+    getPrices = () => {
         if (this.state.portfolio.length > 0) {
             this.state.portfolio.map((stock, i) => this.getPrice(stock, i))
         }
@@ -70,7 +70,7 @@ class Portfolio extends React.Component {
     renderStocks = () => {
         if (this.state.portfolio.length > 0 ) {
             return this.state.portfolio.map(stock => {
-                let {ticker, qty, price, open} = {...stock};
+                let {ticker, qty, price, open} = stock;
                 return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={price} open={open} />
             })
         } else {
