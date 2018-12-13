@@ -19,7 +19,6 @@ class App extends Component {
   componentDidMount() {
     if (localStorage.getItem("spra-token")) {
       this.setState({
-        ...this.state,
         loading: true
       });
 
@@ -58,7 +57,6 @@ class App extends Component {
       localStorage.setItem("spra-token", json.token);
 
       this.setState({
-        ...this.state,
         isLoggedIn: true,
         userData: json.user
       });
@@ -81,7 +79,6 @@ class App extends Component {
       localStorage.setItem("spra-token", json.token);
 
       this.setState({
-        ...this.state,
         isLoggedIn: true,
         userData: json.user
       });
@@ -94,7 +91,6 @@ class App extends Component {
     localStorage.removeItem("spra-token");
 
     this.setState({
-      ...this.state,
       isLoggedIn: false,
       userData: null
     });
@@ -140,7 +136,6 @@ class App extends Component {
     if (res.ok) {
       let json = await res.json()
       this.setState({
-        ...this.state,
         userData: {
           ...this.state.userData,
           account_balance: json.account_balance

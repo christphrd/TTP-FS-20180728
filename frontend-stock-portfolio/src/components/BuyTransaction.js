@@ -16,7 +16,6 @@ class BuyTransaction extends React.Component {
 
     handleChange = e => {
         this.setState({
-            ...this.state,
             [e.target.name]: e.target.value
         })
     };

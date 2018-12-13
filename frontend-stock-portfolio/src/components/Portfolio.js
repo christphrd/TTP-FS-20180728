@@ -38,7 +38,6 @@ class Portfolio extends React.Component {
         const response = await fetch(`${backendBaseURL}portfolio`, settings)
         const json = await response.json()
         this.setState({
-            ...this.state,
             portfolio: json
         }, () => this.getPrices())
     }

@@ -24,7 +24,6 @@ class LoggedInContainer extends React.Component {
         fetch(`${backendBaseURL}audit`, settings)
         .then(res => res.json())
         .then(json => this.setState({
-            ...this.state,
             transactions: json,
             onAudit: !this.state.onAudit
         }))
