@@ -36,7 +36,10 @@ class App extends Component {
         isLoggedIn: true,
         userData: json.user
       }))
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        this.setState({loading: false})
+      })
     };
   };
 
@@ -44,10 +47,7 @@ class App extends Component {
     const settings = {
       method: 'POST',
       headers: HEADERS,
-      body: JSON.stringify({
-        ...data,
-        password_confirmation: data.password
-      })
+      body: JSON.stringify(data)
     };
     
     const response = await fetch(`${backendBaseURL}register`, settings);
