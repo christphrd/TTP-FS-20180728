@@ -117,7 +117,7 @@ class App extends Component {
         ticker: ticker,
         quantity: quantity,
         price: price,
-        account_balance: Number(balance - (Number(quantity) * price)).toFixed(2)
+        account_balance: (balance - (quantity * price)).toFixed(2)
       })
     }
   }
