@@ -27,7 +27,9 @@ class LoggedInContainer extends React.Component {
             transactions: json,
             onAudit: !this.state.onAudit
         }))
-        .catch(console.log)
+        .catch(err => this.setState({
+            onAudit: !this.state.onAudit
+        }, () => console.log(err)))
     };
     
     render() {

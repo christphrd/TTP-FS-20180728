@@ -23,11 +23,11 @@ class BuyTransaction extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
 
-        this.props.buyShares(this.state)
+        this.props.buyShares({ticker: this.state.ticker.trim().toUpperCase(), quantity: Number(this.state.quantity)})
     };
 
     render() {
-        let isEnabled = this.state.ticker.length > 0 && this.state.quantity.length > 0;
+        let isEnabled = this.state.ticker.length > 0 && Number(this.state.quantity) > 0;
 
         return (
             <Paper elevation={1} style={buyStyle}>

@@ -106,16 +106,16 @@ class App extends Component {
       return
     }
 
-    let balance = Number(this.state.userData.account_balance)
-    if (balance < Number(quantity) * price) {
-      alert(`Sorry, buying ${quantity} shares of ${ticker.toUpperCase()} at $${price.toFixed(2)} would cost a total of $${(Number(quantity) * price).toFixed(2)}. You only have a balance of $${balance.toFixed(2)}.`)
+    let balance = Number(this.state.userData.account_balance).toFixed(2)
+    if (balance < quantity * price) {
+      alert(`Sorry, buying ${quantity} shares of ${ticker} at $${price.toFixed(2)} would cost a total of $${(quantity * price).toFixed(2)}. You only have a balance of $${balance}.`)
       return
     }
 
-    if (window.confirm(`Are you sure you want to buy ${quantity} share(s) of ${ticker.toUpperCase()} at $${price.toFixed(2)}? The total cost would be $${(Number(quantity) * price).toFixed(2)}. You would have a remaining balance of $${(balance - (Number(quantity) * price)).toFixed(2)}.`)) {
+    if (window.confirm(`Are you sure you want to buy ${quantity} share(s) of ${ticker} at $${price.toFixed(2)}? The total cost would be $${(quantity * price).toFixed(2)}. You would have a remaining balance of $${(balance - (quantity * price)).toFixed(2)}.`)) {
       this.confirmBuy({
-        ticker: ticker.toUpperCase(),
-        quantity: Number(quantity),
+        ticker: ticker,
+        quantity: quantity,
         price: price,
         account_balance: Number(balance - (Number(quantity) * price)).toFixed(2)
       })
