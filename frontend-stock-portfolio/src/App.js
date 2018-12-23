@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import './App.css';
-import { backendBaseURL, stocksBaseURL, HEADERS} from './constants';
+import { backendBaseURL, stocksBaseURL, HEADERS, authorizedHeaders} from './constants';
 
 import Header from './components/Header.js';
 import Home from './containers/Home.js';
@@ -16,30 +16,29 @@ class App extends Component {
     userData: null
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (localStorage.getItem("spra-token")) {
-      this.setState({
-        loading: true
-      });
+      this.setState({loading: true});
 
-      const settings = {
-        headers: {
-          ...HEADERS,
-          Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-        }
-      };
+      const settings = {headers: authorizedHeaders()};
 
-      fetch(`${backendBaseURL}current_user`, settings)
-      .then(res => res.json())
-      .then(json => this.setState({
-        loading: false,
-        isLoggedIn: true,
-        userData: json.user
-      }))
-      .catch(err => {
+      try {
+        const res = await fetch(`${backendBaseURL}current_user`, settings)
+        if (res.ok) {
+          let json = await res.json();
+          this.setState({
+            loading: false,
+            isLoggedIn: true,
+            userData: json.user
+          })
+        } else {
+          console.log(res)
+          this.setState({ loading: false })
+        }  
+      } catch (err) {
         console.log(err)
-        this.setState({loading: false})
-      })
+        this.setState({ loading: false })
+      }
     };
   };
 
@@ -125,10 +124,7 @@ class App extends Component {
   confirmBuy = async (data) => {
     const settings = {
       method: 'POST',
-      headers: {
-        ...HEADERS,
-        Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-      },
+      headers: authorizedHeaders(),
       body: JSON.stringify(data)
     }
 

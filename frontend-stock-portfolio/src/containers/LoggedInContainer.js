@@ -5,7 +5,7 @@ import Portfolio from '../components/Portfolio';
 
 import Button from '@material-ui/core/Button';
 
-import { backendBaseURL, HEADERS} from '../constants';
+import { backendBaseURL, authorizedHeaders} from '../constants';
 
 class LoggedInContainer extends React.Component {
     state = {
@@ -14,12 +14,7 @@ class LoggedInContainer extends React.Component {
     };
 
     handleNavClick = e => {
-        const settings = {
-            headers: {
-                ...HEADERS,
-                Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-            }
-        };
+        const settings = { headers: authorizedHeaders() };
         
         fetch(`${backendBaseURL}audit`, settings)
         .then(res => res.json())

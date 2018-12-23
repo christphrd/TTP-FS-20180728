@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PortfolioItem from './PortfolioItem';
-import { stocksBaseURL, backendBaseURL, HEADERS} from '../constants';
+import { stocksBaseURL, backendBaseURL, authorizedHeaders} from '../constants';
 
 import Paper from '@material-ui/core/Paper';
 
@@ -28,12 +28,7 @@ class Portfolio extends React.Component {
     }
 
     fetchPortfolio = async () => {
-        const settings = {
-            headers: {
-                ...HEADERS,
-                Authorization: `Bearer ${localStorage.getItem("spra-token")}`
-            }
-        };
+        const settings = { headers: authorizedHeaders() };
 
         const response = await fetch(`${backendBaseURL}portfolio`, settings)
         const json = await response.json()

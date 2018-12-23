@@ -6,3 +6,7 @@ export const HEADERS = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
 };
+
+export function authorizedHeaders() {
+    return { ...HEADERS, Authorization: `Bearer ${localStorage.getItem("spra-token")}`}
+};
