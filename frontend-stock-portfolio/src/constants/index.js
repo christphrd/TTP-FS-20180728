@@ -1,4 +1,4 @@
-export const backendBaseURL = 'http://localhost:3000/';
+export const backendBaseURL = 'https://ttp-stocks-node.herokuapp.com/';
 
 export const stocksBaseURL = 'https://api.iextrading.com/1.0/';
 
