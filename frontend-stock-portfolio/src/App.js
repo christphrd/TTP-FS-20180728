@@ -43,6 +43,7 @@ class App extends Component {
   };
 
   handleRegister = async data => {
+    this.setState({loading: true});
     const settings = {
       method: 'POST',
       headers: HEADERS,
@@ -56,15 +57,18 @@ class App extends Component {
       localStorage.setItem("spra-token", json.token);
 
       this.setState({
+        loading: false,
         isLoggedIn: true,
         userData: json.user
       });
     } else {
       console.log(response, json)
+      this.setState({ loading: false });
     }
   };
 
   handleSignIn = async data => {
+    this.setState({ loading: true });
     const settings = {
       method: 'POST',
       headers: HEADERS,
@@ -78,11 +82,13 @@ class App extends Component {
       localStorage.setItem("spra-token", json.token);
 
       this.setState({
+        loading: false,
         isLoggedIn: true,
         userData: json.user
       });
     } else {
       console.log(response, json)
+      this.setState({ loading: false })
     } 
   };
 
