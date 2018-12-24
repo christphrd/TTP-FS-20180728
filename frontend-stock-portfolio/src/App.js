@@ -49,22 +49,27 @@ class App extends Component {
       headers: HEADERS,
       body: JSON.stringify(data)
     };
-    
-    const response = await fetch(`${backendBaseURL}register`, settings);
-    const json = await response.json();
 
-    if (json.status === 201) {
-      localStorage.setItem("spra-token", json.token);
-
-      this.setState({
-        loading: false,
-        isLoggedIn: true,
-        userData: json.user
-      });
-    } else {
-      console.log(response, json)
+    try {
+      const response = await fetch(`${backendBaseURL}register`, settings);
+      const json = await response.json();
+  
+      if (json.status === 201) {
+        localStorage.setItem("spra-token", json.token);
+  
+        this.setState({
+          loading: false,
+          isLoggedIn: true,
+          userData: json.user
+        });
+      } else {
+        console.log(response, json)
+        this.setState({ loading: false });
+      }    
+    } catch (err) {
+      console.log(err)
       this.setState({ loading: false });
-    }
+    } 
   };
 
   handleSignIn = async data => {
@@ -75,21 +80,26 @@ class App extends Component {
       body: JSON.stringify(data)
     };
 
-    const response = await fetch(`${backendBaseURL}signin`, settings);
-    const json = await response.json();
-
-    if (json.status === 200) {
-      localStorage.setItem("spra-token", json.token);
-
-      this.setState({
-        loading: false,
-        isLoggedIn: true,
-        userData: json.user
-      });
-    } else {
-      console.log(response, json)
-      this.setState({ loading: false })
-    } 
+    try {    
+      const response = await fetch(`${backendBaseURL}signin`, settings);
+      const json = await response.json();
+  
+      if (json.status === 200) {
+        localStorage.setItem("spra-token", json.token);
+  
+        this.setState({
+          loading: false,
+          isLoggedIn: true,
+          userData: json.user
+        });
+      } else {
+        console.log(response, json)
+        this.setState({ loading: false })
+      } 
+    } catch (err) {
+      console.log(err)
+      this.setState({ loading: false });    
+    }
   };
 
   logOut = () => {
