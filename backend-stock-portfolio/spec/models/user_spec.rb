@@ -4,7 +4,7 @@ RSpec.describe User, type: :model do
   context "validation tests" do
     User.destroy_all
 
-    it "ensures username presence" do
+    it "ensures name presence" do
       user = User.new(email: "test@test.com", password: "test", password_confirmation: "test").save
       expect(user).to eq(false)
     end
