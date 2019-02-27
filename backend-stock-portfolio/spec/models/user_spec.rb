@@ -8,6 +8,11 @@ RSpec.describe User, type: :model do
       user = User.new(email: "test@test.com", password: "test", password_confirmation: "test").save
       expect(user).to eq(false)
     end
+
+    it "ensures email presence" do
+      user = User.new(name: "test", password: "test", password_confirmation: "test").save
+      expect(user).to eq(false)
+    end
   end
   
   context "user story tests" do
