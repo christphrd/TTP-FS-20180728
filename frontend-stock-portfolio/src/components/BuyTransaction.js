@@ -8,40 +8,28 @@ const buyStyle = {
     width: '200px',
 }
 
-class BuyTransaction extends React.Component {
-    state = {
-        ticker: "",
-        quantity: "",
-    };
+const BuyTransaction = props => {
+    const [ticker, setTicker] = React.useState("");
+    const [quantity, setQuantity] = React.useState("");
 
-    handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    };
-
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
-        this.props.buyShares({ticker: this.state.ticker.trim().toUpperCase(), quantity: Number(this.state.quantity)})
+        props.buyShares({ ticker: ticker.trim().toUpperCase(), quantity: Number(quantity) })
     };
 
-    render() {
-        let isEnabled = this.state.ticker.length > 0 && Number(this.state.quantity) > 0;
-
-        return (
-            <Paper elevation={1} style={buyStyle}>
-                <div id="buy-transaction">
-                    <h4>Cash: ${this.props.balance}</h4>
-                    <form onSubmit={this.handleSubmit}>
-                        <input name="ticker" type="text" placeholder="Ticker" onChange={this.handleChange}></input><p /> 
-                        <input name="quantity" type="text" pattern="[0-9]*" placeholder="Qty (whole nos. only)" onChange={this.handleChange}></input><p />
-                        <Button variant="outlined" color="primary" type="submit" disabled={!isEnabled}>Buy</Button>
-                    </form>
-                </div>
-            </Paper>
-        )
-    }
+    return (
+        <Paper elevation={1} style={buyStyle}>
+            <div id="buy-transaction">
+                <h4>Cash: ${props.balance}</h4>
+                <form onSubmit={handleSubmit}>
+                    <input name="ticker" type="text" placeholder="Ticker" onChange={e => setTicker(e.target.value)}></input><p />
+                    <input name="quantity" type="text" pattern="[0-9]*" placeholder="Qty (whole nos. only)" onChange={e => setQuantity(e.target.value)}></input><p />
+                    <Button variant="outlined" color="primary" type="submit" disabled={!(ticker.length > 0 && Number(quantity) > 0)}>Buy</Button>
+                </form>
+            </div>
+        </Paper>
+    )
 };
 
 export default BuyTransaction;
