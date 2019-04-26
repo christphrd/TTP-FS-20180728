@@ -8,18 +8,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
-// class Home extends React.Component {
-//     state = {
-//         onRegister: false
-//     };
-
-//     handleNavClick = e => {
-//         this.setState({
-//             onRegister: !this.state.onRegister
-//         })
-//     };
-
-//     render() {
 const Home = props => {
     const [onRegister, setOnRegister] = React.useState(false);
 
@@ -37,7 +25,6 @@ const Home = props => {
             </Card>
         </div>
     )
-    // }
 };
 
 export default Home;
