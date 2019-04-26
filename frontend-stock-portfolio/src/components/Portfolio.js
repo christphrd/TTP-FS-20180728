@@ -10,40 +10,49 @@ const portfolioStyle = {
     width: '250px',
 }
 
-class Portfolio extends React.Component {
-    state = {
-        portfolio: []
-    };
+const Portfolio = props => {
+    const [portfolio, setPortfolio] = React.useState([]);
+    
+    function useInterval(callback, delay) {
+        const savedCallback = React.useRef();
 
-    componentDidMount(){
-        this.fetchPortfolio();
+        // Remember the latest callback.
+        React.useEffect(() => {
+            savedCallback.current = callback;
+        }, [callback]);
 
-        this.interval = setInterval(() => {
-            this.fetchPortfolio()
-        }, 2000);
-    };
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
+        // Set up the interval.
+        React.useEffect(() => {
+            function tick() {
+                savedCallback.current();
+            }
+            if (delay !== null) {
+                let id = setInterval(tick, delay);
+                return () => clearInterval(id);
+            }
+        }, [delay]);
     }
-
-    fetchPortfolio = async () => {
+    
+    useInterval(() => {
+        fetchPortfolio();
+    }, 2000)
+    
+    const fetchPortfolio = async () => {
         const settings = { headers: authorizedHeaders() };
 
         const response = await fetch(`${backendBaseURL}portfolio`, settings)
         const json = await response.json()
-        this.setState({
-            portfolio: json
-        }, () => this.getPrices())
+        setPortfolio(json);
+        getPrices();
     }
 
-    getPrices = () => {
-        if (this.state.portfolio.length > 0) {
-            this.state.portfolio.map((stock, i) => this.getPrice(stock, i))
+    const getPrices = () => {
+        if (portfolio.length > 0) {
+            portfolio.map((stock, i) => getPrice(stock, i))
         }
     };
 
-    getPrice = async (stock, i) => {
+    const getPrice = async (stock, i) => {
         let ticker = stock.ticker
         const priceRes = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
         const price = await priceRes.json()
@@ -51,20 +60,18 @@ class Portfolio extends React.Component {
         const ohlcRes = await fetch(`${stocksBaseURL}stock/${ticker}/ohlc`)
         const ohlc = await ohlcRes.json()
 
-        this.setState({
-            portfolio: this.replaceOneElementInArray(this.state.portfolio, i, Object.assign(stock, { price: price , open: ohlc.open.price}))
-        })
+        setPortfolio(replaceOneElementInArray(portfolio, i, Object.assign(stock, { price: price, open: ohlc.open.price })))
     }
 
-    replaceOneElementInArray = (arr, ind, sub) => {
+    const replaceOneElementInArray = (arr, ind, sub) => {
         let copy = arr.slice()
         copy[ind] = sub
         return copy
     }
 
-    renderStocks = () => {
-        if (this.state.portfolio.length > 0 ) {
-            return this.state.portfolio.map(stock => {
+    const renderStocks = () => {
+        if (portfolio.length > 0 ) {
+            return portfolio.map(stock => {
                 let {ticker, qty, price, open} = stock;
                 return <PortfolioItem key={ticker} ticker={ticker} qty={qty} price={price} open={open} />
             })
@@ -73,16 +80,14 @@ class Portfolio extends React.Component {
         }
     };
 
-    render() {
-        return(
-            <Paper elevation={1} style={{width: '300px'}}>
-                <div id="portfolio" style={portfolioStyle}>
-                    <h3>Portfolio</h3>
-                    {this.renderStocks()}
-                </div>
-            </Paper>
-        )
-    }
+    return(
+        <Paper elevation={1} style={{width: '300px'}}>
+            <div id="portfolio" style={portfolioStyle}>
+                <h3>Portfolio</h3>
+                {renderStocks()}
+            </div>
+        </Paper>
+    )
 };
 
 export default Portfolio;
