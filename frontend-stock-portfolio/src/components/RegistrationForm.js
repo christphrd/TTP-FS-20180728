@@ -8,71 +8,61 @@ import Lock from '@material-ui/icons/Lock';
 
 import Button from '@material-ui/core/Button';
 
-class RegistrationForm extends React.Component {
-    state = {
-        name: "",
-        email: "",
-        password: ""
-    };
+const RegistrationForm = props => {
+    const [name, setName] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
 
-    handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    };
-
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
-        this.props.handleRegister(this.state)
+        props.handleRegister({name: name, email: email, password: password})
     };
 
-    render(){
-        return(
-            <form className="home-form" onSubmit={this.handleSubmit}>
-                <TextField
-                    name="name"
-                    type="text"
-                    placeholder="name"
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <AccountCircle />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={this.handleChange}
-                /><p />
-                <TextField
-                    name="email"
-                    type="text"
-                    placeholder="email"
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <Email />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={this.handleChange}
-                /><p />   
-                <TextField
-                    name="password"
-                    type="password"
-                    placeholder="password"
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <Lock />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={this.handleChange}
-                /><p />
-                <Button type="submit" variant="contained" color="primary">Register</Button>
-            </form>
-        )
-    }
+    return(
+        <form className="home-form" onSubmit={handleSubmit}>
+            <TextField
+                name="name"
+                type="text"
+                placeholder="name"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <AccountCircle />
+                        </InputAdornment>
+                    ),
+                }}
+                onChange={e => setName(e.target.value)}
+            /><p />
+            <TextField
+                name="email"
+                type="text"
+                placeholder="email"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <Email />
+                        </InputAdornment>
+                    ),
+                }}
+                onChange={e => setEmail(e.target.value)}
+            /><p />   
+            <TextField
+                name="password"
+                type="password"
+                placeholder="password"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <Lock />
+                        </InputAdornment>
+                    ),
+                }}
+                onChange={e => setPassword(e.target.value)}
+            /><p />
+            <Button type="submit" variant="contained" color="primary">Register</Button>
+        </form>
+    )
 };
 
 export default RegistrationForm;
