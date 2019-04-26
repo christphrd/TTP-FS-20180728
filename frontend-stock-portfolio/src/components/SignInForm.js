@@ -7,57 +7,47 @@ import Lock from '@material-ui/icons/Lock';
 
 import Button from '@material-ui/core/Button';
 
-class SignInForm extends React.Component {
-    state = {
-        email: "",
-        password: ""
-    };
+const SignInForm = props => {
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
 
-    handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    };
-
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
-        this.props.handleSignIn(this.state)
+        props.handleSignIn({email: email, password: password})
     };
     
-    render() {
-        return(
-            <form className="home-form" onSubmit={this.handleSubmit}>
-                <TextField 
-                    name="email" 
-                    type="text" 
-                    placeholder="email" 
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <Email />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={this.handleChange}
-                /><p />
-                <TextField
-                    name="password"
-                    type="password"
-                    placeholder="password"
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <Lock />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={this.handleChange}
-                /><p />
-                <Button type="submit" variant="contained" color="primary">Sign In</Button>
-            </form>
-        )
-    }
+    return(
+        <form className="home-form" onSubmit={handleSubmit}>
+            <TextField 
+                name="email" 
+                type="text" 
+                placeholder="email" 
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <Email />
+                        </InputAdornment>
+                    ),
+                }}
+                onChange={e => setEmail(e.target.value)}
+            /><p />
+            <TextField
+                name="password"
+                type="password"
+                placeholder="password"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <Lock />
+                        </InputAdornment>
+                    ),
+                }}
+                onChange={e => setPassword(e.target.value)}
+            /><p />
+            <Button type="submit" variant="contained" color="primary">Sign In</Button>
+        </form>
+    )
 };
 
 export default SignInForm;
