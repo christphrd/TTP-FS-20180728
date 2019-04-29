@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './App.css';
 import { backendBaseURL, stocksBaseURL, HEADERS, authorizedHeaders} from './constants';
@@ -9,16 +9,18 @@ import LoggedInContainer from './containers/LoggedInContainer.js';
 
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-class App extends Component {
-  state = {
-    loading: false,
-    isLoggedIn: false,
-    userData: null
-  };
+const App = props => {
+  const [loading, setLoading] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [userData, setUserData] = React.useState(null);
 
-  async componentDidMount() {
+  React.useEffect(() => {
+    fetchUserData()
+  },[])
+
+  const fetchUserData = async () => {
     if (localStorage.getItem("spra-token")) {
-      this.setState({loading: true});
+      setLoading(true);
 
       const settings = {headers: authorizedHeaders()};
 
@@ -26,24 +28,23 @@ class App extends Component {
         const res = await fetch(`${backendBaseURL}current_user`, settings)
         if (res.ok) {
           let json = await res.json();
-          this.setState({
-            loading: false,
-            isLoggedIn: true,
-            userData: json.user
-          })
+          setUserData(json.user);
+          setLoading(false);
+          setIsLoggedIn(true);
         } else {
           console.log(res)
-          this.setState({ loading: false })
+          setLoading(false);
         }  
       } catch (err) {
         console.log(err)
-        this.setState({ loading: false })
+        setLoading(false);
       }
     };
   };
 
-  handleRegister = async data => {
-    this.setState({loading: true});
+  const handleRegister = async data => {
+    setLoading(true);
+
     const settings = {
       method: 'POST',
       headers: HEADERS,
@@ -56,24 +57,24 @@ class App extends Component {
   
       if (json.status === 201) {
         localStorage.setItem("spra-token", json.token);
-  
-        this.setState({
-          loading: false,
-          isLoggedIn: true,
-          userData: json.user
-        });
+
+        setUserData(json.user);
+        setLoading(false);
+        setIsLoggedIn(true);
       } else {
         console.log(response, json)
-        this.setState({ loading: false });
+        setLoading(false);
       }    
     } catch (err) {
       console.log(err)
-      this.setState({ loading: false });
+      setLoading(false);
+
     } 
   };
 
-  handleSignIn = async data => {
-    this.setState({ loading: true });
+  const handleSignIn = async data => {
+    setLoading(true);
+
     const settings = {
       method: 'POST',
       headers: HEADERS,
@@ -86,32 +87,28 @@ class App extends Component {
   
       if (json.status === 200) {
         localStorage.setItem("spra-token", json.token);
-  
-        this.setState({
-          loading: false,
-          isLoggedIn: true,
-          userData: json.user
-        });
+
+        setUserData(json.user);
+        setLoading(false);
+        setIsLoggedIn(true);
       } else {
         console.log(response, json)
-        this.setState({ loading: false })
+        setLoading(false);
       } 
     } catch (err) {
       console.log(err)
-      this.setState({ loading: false });    
+      setLoading(false);
     }
   };
 
-  logOut = () => {
+  const logOut = () => {
     localStorage.removeItem("spra-token");
 
-    this.setState({
-      isLoggedIn: false,
-      userData: null
-    });
+    setIsLoggedIn(false);
+    setUserData(null);
   };
 
-  buyShares = async ({ ticker, quantity }) => {
+  const buyShares = async ({ ticker, quantity }) => {
     let price
     const response = await fetch(`${stocksBaseURL}stock/${ticker}/price`)
     if (response.ok) {
@@ -121,14 +118,14 @@ class App extends Component {
       return
     }
 
-    let balance = Number(this.state.userData.account_balance).toFixed(2)
+    let balance = Number(userData.account_balance).toFixed(2)
     if (balance < quantity * price) {
       alert(`Sorry, buying ${quantity} shares of ${ticker} at $${price.toFixed(2)} would cost a total of $${(quantity * price).toFixed(2)}. You only have a balance of $${balance}.`)
       return
     }
 
     if (window.confirm(`Are you sure you want to buy ${quantity} share(s) of ${ticker} at $${price.toFixed(2)}? The total cost would be $${(quantity * price).toFixed(2)}. You would have a remaining balance of $${(balance - (quantity * price)).toFixed(2)}.`)) {
-      this.confirmBuy({
+      confirmBuy({
         ticker: ticker,
         quantity: quantity,
         price: price,
@@ -137,7 +134,7 @@ class App extends Component {
     }
   }
 
-  confirmBuy = async (data) => {
+  const confirmBuy = async (data) => {
     const settings = {
       method: 'POST',
       headers: authorizedHeaders(),
@@ -147,30 +144,27 @@ class App extends Component {
     let res = await fetch(`${backendBaseURL}transactions`, settings)
     if (res.ok) {
       let json = await res.json()
-      this.setState({
-        userData: {
-          ...this.state.userData,
+      setUserData({
+          ...userData,
           account_balance: json.account_balance
         }
-      })
+      )
       alert("Success!")
     } else {
       alert("Try again. There was an issue!")
     }
   }
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <Header />
-        </header>
-        <body>
-          {this.state.loading ? <LinearProgress variant="query" style={{ flexGrow: 1}} /> : this.state.isLoggedIn ? <LoggedInContainer userData={this.state.userData} logOut={this.logOut} buyShares={this.buyShares} /> : <Home handleRegister={this.handleRegister} handleSignIn={this.handleSignIn} />}
-        </body>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <header className="App-header">
+        <Header />
+      </header>
+      <body>
+        {loading ? <LinearProgress variant="query" style={{ flexGrow: 1}} /> : isLoggedIn ? <LoggedInContainer userData={userData} logOut={logOut} buyShares={buyShares} /> : <Home handleRegister={handleRegister} handleSignIn={handleSignIn} />}
+      </body>
+    </div>
+  );
 }
 
 export default App;

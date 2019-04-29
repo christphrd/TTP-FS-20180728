@@ -15,7 +15,7 @@ const Portfolio = props => {
     
     function useInterval(callback, delay) {
         const savedCallback = React.useRef();
-
+        
         // Remember the latest callback.
         React.useEffect(() => {
             savedCallback.current = callback;
