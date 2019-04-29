@@ -13,6 +13,10 @@ const portfolioStyle = {
 const Portfolio = props => {
     const [portfolio, setPortfolio] = React.useState([]);
     
+    React.useEffect(() => {
+        fetchPortfolio();
+    }, []);
+    
     function useInterval(callback, delay) {
         const savedCallback = React.useRef();
         
